@@ -1,0 +1,29 @@
+﻿@page "/tool"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject IJSRuntime JS
+
+<PageTitle>Tool</PageTitle>
+
+<h1>Tool</h1>
+<button class="btn btn-primary" @onclick="CallJavaScriptMethod">Click me</button>
+
+@code{
+  private IJSObjectReference myScript;
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      myScript = await JS.InvokeAsync<IJSObjectReference>("import", "/public/tool-bundle.js");
+    }
+  }
+
+  private async Task CallJavaScriptMethod()
+  {
+    Console.WriteLine("aaa");
+    myScript.InvokeVoidAsync("doSome", "ciao");
+  }
+
+}
+

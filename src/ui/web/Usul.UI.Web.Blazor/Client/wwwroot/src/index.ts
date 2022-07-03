@@ -1,0 +1,1 @@
+export let assemblyName: string = "Usul.UI.Web.Blazor.Client";

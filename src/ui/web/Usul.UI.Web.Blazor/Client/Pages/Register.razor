@@ -1,0 +1,63 @@
+﻿@page "/register"
+
+<PageTitle>Register</PageTitle>
+
+<h1>Register page</h1>
+
+   <form id="loginForm">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control-input"
+                  id="cusername"
+                  required
+                  data-pristine-not-empty="cusername"
+                />
+                <label class="label-control" for="cusername">Username</label>
+                <div class="help-block with-errors"></div>
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control-input"
+                  id="cpassword"
+                  required
+                />
+                <label class="label-control" for="cpassword">Password</label>
+                <div class="help-block with-errors"></div>
+              </div>
+
+               <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control-input"
+                  id="ccpassword"
+                  required
+                />
+                <label class="label-control" for="ccpassword">Confirm Password</label>
+                <div class="help-block with-errors"></div>
+              </div>
+
+              <div class="form-group">
+                <button
+                  type="submit"
+                  class="form-control btn-solid-reg popup-with-move-anim"
+                  id="csubmit"
+                >
+                  Send
+                </button>
+              </div>
+
+            </form>
+
+
+@code {
+
+    private void doRegistration()
+    {
+       //do some
+  
+        
+    }
+}
+

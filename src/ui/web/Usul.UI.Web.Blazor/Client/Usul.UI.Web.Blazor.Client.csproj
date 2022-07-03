@@ -7,9 +7,21 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
+<!-- remove node_modules folder -->
+  <ItemGroup>
+    <Compile Remove="wwwroot\node_modules\**" />
+    <Content Remove="wwwroot\node_modules\**" />
+    <EmbeddedResource Remove="wwwroot\node_modules\**" />
+    <None Remove="wwwroot\node_modules\**" />
+    <TypeScriptCompile Remove="wwwroot\node_modules\**" />
+  </ItemGroup>
+<!-- remove node_modules folder -->
+
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
+   <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,5 +31,12 @@
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
+
+<!-- prebuild ts2js -->
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" WorkingDirectory="wwwroot" />
+    <Exec Command="npm run build" WorkingDirectory="wwwroot" />
+  </Target>
+<!-- prebuild ts2js -->
 
 </Project>

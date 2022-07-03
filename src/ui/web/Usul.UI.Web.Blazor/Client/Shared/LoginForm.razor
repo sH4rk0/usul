@@ -1,0 +1,99 @@
+@inject IJSRuntime JS
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+   
+    <form id="loginForm">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control-input"
+                  id="cusername"
+                  required
+                  data-pristine-not-empty="cusername"
+                />
+                <label class="label-control" for="cusername">Username</label>
+                <div class="help-block with-errors"></div>
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control-input"
+                  id="cpassword"
+                  required
+                />
+                <label class="label-control" for="cpassword">Password</label>
+                <div class="help-block with-errors"></div>
+              </div>
+
+              <div class="form-group">
+                <button
+                  type="submit"
+                  class="form-control btn-solid-reg popup-with-move-anim"
+                  id="csubmit"
+                >
+                  Send
+                </button>
+              </div>
+
+            </form>
+
+
+            @code {
+
+                 private IJSObjectReference? loginScript;
+
+
+ protected override async Task OnInitializedAsync()
+  {
+   
+      Console.WriteLine("import login js");
+      loginScript = await JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js");
+
+  } 
+  
+  
+  protected override void OnInitialized()
+    {
+ loginScript =  JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js");
+
+      
+    }
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine($"OnParameterSet => Title: {"Title"}, CurrentCount: {"CurrentCount"}");
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            Console.WriteLine("This is the first render of the component");
+        }
+    }
+    protected override bool ShouldRender()
+    {
+        return true;
+    }
+
+ 
+ /* protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      Console.WriteLine("import login js");
+      loginScript = await JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js");
+
+    }
+  }*/
+
+
+
+     [JSInvokable]
+    public static Task<AuthenticationState> doLogin()
+    {
+
+       var anonymous = new ClaimsIdentity();
+       
+    return  Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
+       //return Task.FromResult(true);
+    }
+}

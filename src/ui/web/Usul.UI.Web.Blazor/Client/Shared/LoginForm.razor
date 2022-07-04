@@ -1,7 +1,8 @@
 @inject IJSRuntime JS
 @using Microsoft.AspNetCore.Components.Authorization;
 @using System.Security.Claims;
-   
+@implements IAsyncDisposable
+
     <form id="loginForm">
               <div class="form-group">
                 <input
@@ -36,55 +37,34 @@
               </div>
 
             </form>
-
+<button class="btn btn-primary" @onclick="OnClick">Click me</button>
 
             @code {
 
                  private IJSObjectReference? loginScript;
+  string Version { get { return "?v=" + DateTime.Now.Ticks.ToString(); } }
 
-
- protected override async Task OnInitializedAsync()
-  {
-   
-      Console.WriteLine("import login js");
-      loginScript = await JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js");
-
-  } 
-  
-  
-  protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
- loginScript =  JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js");
-
-      
-    }
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine($"OnParameterSet => Title: {"Title"}, CurrentCount: {"CurrentCount"}");
-    }
-    protected override void OnAfterRender(bool firstRender)
-    {
+       
         if(firstRender)
         {
-            Console.WriteLine("This is the first render of the component");
+            loginScript = await JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js"+ Version);
+            //await OnClick();
+        }
+      
+    }
+
+    private async Task OnClick() {
+       if(loginScript is not null) await loginScript.InvokeVoidAsync("setupLogin");
+    }
+
+     async ValueTask IAsyncDisposable.DisposeAsync() {
+        Console.WriteLine("dispose");
+        if (loginScript is not null) {
+            await loginScript.DisposeAsync();
         }
     }
-    protected override bool ShouldRender()
-    {
-        return true;
-    }
-
- 
- /* protected override async Task OnAfterRenderAsync(bool firstRender)
-  {
-    if (firstRender)
-    {
-      Console.WriteLine("import login js");
-      loginScript = await JS.InvokeAsync<IJSObjectReference>("import", "/public/login-bundle.js");
-
-    }
-  }*/
-
 
 
      [JSInvokable]

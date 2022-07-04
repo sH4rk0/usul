@@ -2,7 +2,6 @@ import Swal from "sweetalert2";
 import Pristine from "pristinejs";
 import { assemblyName } from "./index";
 
-
 export class loginForm {
     private _loginform: HTMLFormElement;
     private _cusername: HTMLInputElement;
@@ -83,8 +82,11 @@ export class loginForm {
 
 }
 
-//new loginForm();
+export default function setupLogin() {
+    console.log("setupLogin")
+    // new loginForm();
+}
 
-
+new loginForm();
 
 //export let _loginForm = new loginForm();

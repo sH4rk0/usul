@@ -1,14 +1,6 @@
 
-public partial class LoginForm : IAsyncDisposable
+public partial class LoginForm
 {
-     //private IJSObjectReference? loginScript;
-    // [CascadingParameter]
-   
-
-    public async ValueTask DisposeAsync()
-    
-{
-}
 
 
 }
